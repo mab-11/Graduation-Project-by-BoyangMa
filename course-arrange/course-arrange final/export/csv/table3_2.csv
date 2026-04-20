@@ -1,6 +1,0 @@
-"ID","Constraint","Description","Mathematical Form","Priority"
-"HC-1","Class Time Conflict","One class cannot have two courses at same time","∀i≠j: class_i = class_j → time_i ≠ time_j","Critical"
-"HC-2","Teacher Time Conflict","One teacher cannot teach two courses at same time","∀i≠j: teacher_i = teacher_j → time_i ≠ time_j","Critical"
-"HC-3","Room Time Conflict","One room cannot host two courses at same time","∀i≠j: room_i = room_j → time_i ≠ time_j","Critical"
-"HC-4","Room Capacity","Room capacity must be >= class size","capacity(room) ≥ size(class)","High"
-"HC-5","Room Type Match","Course type must match room type","type(course) ⊆ type(room)","Medium"

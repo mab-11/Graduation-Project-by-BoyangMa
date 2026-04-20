@@ -1,6 +1,0 @@
-"ID","Constraint","Description","Weight","Goal"
-"SC-1","Teacher Preference","Schedule according to teacher's preferred times","w₁ = 15","Maximize preference score"
-"SC-2","Course Concentration","Same course scheduled in adjacent timeslots","w₂ = 10","Maximize adjacency"
-"SC-3","Room Balance","Balanced utilization across all rooms","w₃ = 5","Minimize std deviation"
-"SC-4","Day Concentration","Each class courses concentrated in fewer days","w₄ = 8","Minimize days used"
-"SC-5","Room Type Fit","Special courses in specialized rooms","w₅ = 10","Maximize type match"

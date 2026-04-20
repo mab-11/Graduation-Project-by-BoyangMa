@@ -1,7 +1,0 @@
-"Constraint","Fixed GA","AMOGA","SA","ACO","Best"
-"Class Time Conflict","92.5%","100%","88.0%","91.0%","AMOGA"
-"Teacher Time Conflict","94.0%","100%","89.5%","93.0%","AMOGA"
-"Room Time Conflict","91.5%","100%","86.0%","90.5%","AMOGA"
-"Capacity Constraint","96.0%","99.5%","92.0%","95.0%","AMOGA"
-"Room Type Match","88.0%","98.0%","82.0%","86.5%","AMOGA"
-"Overall Rate","92.4%","99.5%","87.5%","91.2%","AMOGA"

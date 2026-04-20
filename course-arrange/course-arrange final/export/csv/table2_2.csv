@@ -1,7 +1,0 @@
-"Method","Optimality","Scalability","Complexity","Best For","Limitations"
-"Integer Programming (IP)","Yes","Low","O(2^n)","Small problems","Exponential time"
-"Linear Programming (LP)","Yes","Medium","Polynomial","Relaxed problems","Integer constraints"
-"Constraint Programming (CP)","Yes","Medium","Exponential","Complex constraints","Search overhead"
-"Branch and Bound","Yes","Low-Med","Exponential","Medium problems","Weak bounds"
-"Dijkstra Algorithm","Yes","High","O(V^2)","Single resource","Limited scope"
-"Dynamic Programming","Yes","Low","O(n*2^n)","Structured problems","Memory explosion"

@@ -1,7 +1,0 @@
-"Algorithm","Convergence Speed","Solution Quality","Scalability","Robustness","Computational Cost"
-"Genetic Algorithm","Medium","High","Good","Good","Medium"
-"AMOGA (Proposed)","Fast","Excellent","Excellent","Excellent","Low"
-"Simulated Annealing","Slow","Medium","Poor","Medium","High"
-"Ant Colony","Medium","High","Medium","Medium","High"
-"Particle Swarm","Fast","Medium","Good","Poor","Low"
-"Harmony Search","Medium","Medium","Medium","Good","Low"

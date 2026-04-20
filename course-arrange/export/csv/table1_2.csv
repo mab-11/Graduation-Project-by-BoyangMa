@@ -1,6 +1,0 @@
-"Scale","Tasks (n)","Timeslots (t)","Rooms (r)","Search Space","Difficulty"
-"Small","20","20","8","(20×20)20 ≈ 10260","Low"
-"Medium","50","25","15","(25×15)50 ≈ 10590","Medium"
-"Large","100","25","25","(25×25)100 ≈ 101400","High"
-"Very Large","200","30","40","(30×40)200 ≈ 103450","Very High"
-"Real World","500+","35","50+","(35×50)500 ≈ 1012750","Extremely High"

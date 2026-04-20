@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxw.mapper.CteacherMapper">
+
+    <resultMap id="CteacherResultMap" type="Cteacher">
+        <result property="id" column="id"></result>
+        <result property="remark" column="remark"></result>
+        <association property="teacher" javaType="teacher" column="teacher_id">
+            <result property="id" column="t_id"></result>
+            <result property="teacherName" column="t_name"></result>
+        </association>
+        <association property="course" javaType="course" column="course_id">
+            <result property="id" column="c_id"></result>
+            <result property="courseName" column="c_name"></result>
+            <result property="code" column="c_code"></result>
+        </association>
+    </resultMap>
+    <resultMap id="CteacherResultMap2" type="Cteacher">
+        <result property="id" column="id"></result>
+        <result property="remark" column="remark"></result>
+        <association property="teacher" javaType="teacher" column="teacher_id">
+            <result property="id" column="teacher_id"></result>
+        </association>
+        <association property="course" javaType="course" column="course_id">
+            <result property="id" column="course_id"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectByCondition" resultMap="CteacherResultMap">
+        select tc.id id,tc.remark remark,t.id t_id,t_name,c_id,c_code,c_name from teacher_course tc,teacher t,course c
+        <where>
+            <if test="course.courseName != null and course.courseName !=''">
+                and c_name like "%" #{course.courseName} "%"
+            </if>
+            <if test="teacher.teacherName !=null and teacher.teacherName !='' ">
+                and t_name like "%" #{teacher.teacherName} "%"
+            </if>
+                and course_id = c_id and teacher_id = t.id
+        </where>
+        order by t.id
+    </select>
+
+    <select id="selectTeachreByCourse" resultMap="com.pxw.mapper.TeacherMapper.TeacherResultMap">
+        select teacher.id ,teacher.t_name from teacher ,teacher_course
+        where teacher.id = teacher_course.teacher_id
+          and teacher_course.course_id = #{id}
+    </select>
+
+    <delete id="deleteByIds">
+        delete from teacher_course where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+</mapper>

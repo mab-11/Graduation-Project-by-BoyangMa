@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Management</title>
+</head>
+<body style="height: 100%">
+<div id="app" style="display: flex; justify-content: center; align-items: center; height: 530px">
+    <el-form ref="teacherForm" :rules="rules" :model="teacherForm" label-width="80px" style="width: 30%">
+        <el-form-item label="Employee ID" prop="id">
+            <el-input v-model="teacherForm.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="Teacher Name" prop="teacherName">
+            <el-input v-model="teacherForm.teacherName"></el-input>
+        </el-form-item>
+        <el-form-item label="New Password" prop="newPassword">
+            <el-input type="password"  v-model="teacherForm.newPassword"></el-input>
+        </el-form-item>
+        <el-form-item label="Confirm Password" prop="confirmPwd">
+            <el-input type="password" v-model="teacherForm.confirmPwd"></el-input>
+        </el-form-item>
+        <el-form-item label="Remark">
+            <el-input type="textarea" v-model="teacherForm.remark"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <div align="center">
+                <el-button type="primary" @click="updateTeacher('teacherForm')">Submit</el-button>
+                <el-button @click="updateFormVisible=false">Cancel</el-button>
+            </div>
+        </el-form-item>
+    </el-form>
+
+</div>
+
+
+<!--Import Resources-->
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+<script src="../js/axios-0.18.0.js"></script>
+
+
+<script>
+    //Create Vue core object
+    new Vue({
+        el: "#app",
+        mounted() {
+            this.checkLogin();
+        },
+        methods: {
+
+            //Check login status
+            checkLogin(){
+                //Get login status
+                axios({
+                    method:"post",
+                    url:"/teacher/checkLogin",
+                }).then(resp=>{
+                    this.teacherForm =resp.data;
+
+                })
+            },
+
+            //Submit update form
+            updateTeacher(formName) {
+                //Form validation
+                this.$refs[formName].validate((valid) => {
+                    if (! valid) {
+                        //Validation failed
+                        console.log('error submit!!');
+                        return false;
+                    } else {
+                        var _this = this;
+                        //ID modified
+                        var flag = null;
+                        axios({
+                            method: "post",
+                            url: "/teacher/update?flag=" + flag,
+                            data: _this.teacherForm
+                        }).then(function (resp) {
+                            if (resp.data == "success") {
+                                //Close dialog
+                                _this.updateFormVisible = false;
+                                //Show prompt message
+                                _this.$message({
+                                    message: 'Update success',
+                                    type: 'success',
+                                    center: true
+                                });
+                            } else {
+                                //Close dialog
+                                _this.updateFormVisible = false;
+                                //Show prompt message
+                                _this.$message({
+                                    message: 'Update failed!',
+                                    type: 'error',
+                                    center: true
+                                });
+                            }
+                        })
+                    }
+                });
+
+            },
+
+
+        },
+
+
+        //Data
+        data() {
+            let reg = /^[0-9A-Za-z]{6,16}$/
+            var validateNewPwd = (rule, value, callback) => {
+                if (value === ""){
+                    callback();
+                } else if (!reg.test(value)) {
+                    callback(new Error('Password should be 6-12 digits or letters!'))
+                } else if (this.teacherForm.password === value) {
+                    callback(new Error('New password cannot be the same as old password!'))
+                } else {
+                    callback()
+                }
+            }
+
+            var validateComfirmPwd = (rule, value, callback) => {
+                if (this.teacherForm.newPassword === ""){
+                    callback();
+                }else if(value === ""){
+                    callback(new Error('Please confirm password!'))
+                } else if (!reg.test(value)) {
+                    callback(new Error('Password should be 6-12 digits or letters!'))
+                } else if (this.teacherForm.newPassword !== value) {
+                    callback(new Error('Confirm password does not match new password!'))
+                } else {
+                    callback()
+                }
+            }
+
+
+            return {
+                //Add form
+                teacherForm: {
+                    id: '',
+                    teacherName: '',
+                    remark: '',
+                    password: '123123123',
+                    newPassword: "",
+                    confirmPwd: "",
+                },
+
+
+
+                rules: {
+                    teacherName:[
+                        {required: true, message: 'Please enter Teacher Name', trigger: 'blur'}
+                    ],
+                    newPassword: [
+                        // {required: true, message: 'Please enter New Password', trigger: 'blur'},
+                        {validator: validateNewPwd, trigger: 'blur'}
+                    ],
+                    confirmPwd: [
+                        // {required: true, message: 'Please Confirm Password', trigger: 'blur'},
+                        {validator: validateComfirmPwd, trigger: 'blur'}
+                    ]
+                }
+            }
+        }
+    })
+
+</script>
+
+
+</body>
+</html>

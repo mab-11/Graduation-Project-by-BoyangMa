@@ -1,0 +1,33 @@
+@import "base.css";
+
+.el-form-item__label {
+    color: white;
+}
+
+html {
+    background: url(../imgs/login_home_background.jpg) no-repeat 0px 0px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+}
+
+#loginMsg {
+    text-align: center;
+    color: aliceblue;
+    margin-bottom: 40px;
+}
+
+
+#loginDiv {
+    width: 37%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 380px;
+    background-color: rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+    box-shadow: 7px 7px 17px rgba(52, 56, 66, 0.5);
+    border-radius: 5px;
+}
+
+

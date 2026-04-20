@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxw.mapper.CourseMapper">
+
+    <resultMap id="CourseResultMap" type="course">
+        <result property="courseName" column="c_name"></result>
+        <result property="code" column="c_code"></result>
+        <result property="id" column="c_id"></result>
+        <result property="remark" column="c_remark"></result>
+    </resultMap>
+
+    <select id="selectByCondition" resultMap="CourseResultMap">
+        select * from course
+        <where>
+            <if test="course.courseName != null and course.courseName != ''">
+                and c_name like "%" #{course.courseName} "%"
+            </if>
+            <if test="course.code !=null and course.code != ''">
+                and c_code like "%" #{course.code} "%"
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from course where c_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+</mapper>

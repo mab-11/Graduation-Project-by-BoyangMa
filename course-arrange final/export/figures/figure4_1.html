@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figure 4.1: AMOGA Algorithm Framework</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #070a14; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 85% 85%, rgba(255, 87, 34, 0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(88, 101, 242, 0.05) 0%, transparent 60%), linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%); z-index: 0; }
+        .bg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
+        .container { position: relative; z-index: 1; max-width: 1100px; width: 100%; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 700; color: #00d4ff; text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); letter-spacing: 4px; margin-bottom: 10px; }
+        .header .subtitle { font-size: 18px; color: #5a6a8a; letter-spacing: 2px; }
+        .content-box { background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+        .figure-title { font-family: 'Orbitron', sans-serif; font-size: 22px; color: #00d4ff; text-align: center; margin-bottom: 30px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.4); letter-spacing: 3px; }
+        .flowchart { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .flow-row { display: flex; align-items: center; gap: 15px; }
+        .flow-box { background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(7, 10, 20, 0.9) 100%); border: 1px solid rgba(0, 212, 255, 0.4); border-radius: 12px; padding: 18px 30px; color: #00d4ff; font-family: 'Orbitron', sans-serif; font-size: 14px; text-align: center; letter-spacing: 1px; transition: all 0.3s; }
+        .flow-box:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3); }
+        .flow-box.start { background: linear-gradient(135deg, #00d4ff, #0088ff); color: #000; }
+        .flow-box.end { background: linear-gradient(135deg, #00e676, #00c853); color: #000; }
+        .flow-box.decision { border-radius: 50%; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+        .arrow { font-size: 24px; color: rgba(0, 212, 255, 0.5); }
+        .arrow-down { font-size: 28px; color: rgba(0, 212, 255, 0.5); }
+        .sub-flow { display: flex; gap: 20px; background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 12px; }
+        .sub-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .sub-box { background: rgba(88, 101, 242, 0.2); border: 1px solid rgba(88, 101, 242, 0.4); border-radius: 8px; padding: 12px 20px; color: #7c4dff; font-size: 13px; }
+        .footer { text-align: center; margin-top: 30px; color: #5a6a8a; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header">
+            <h1>FIGURE 4.1</h1>
+            <p class="subtitle">AMOGA Algorithm Framework</p>
+        </div>
+        <div class="content-box">
+            <div class="figure-title">ADAPTIVE MULTI-OBJECTIVE GENETIC ALGORITHM</div>
+            <div class="flowchart">
+                <div class="flow-box start">START</div>
+                <div class="arrow-down">&#8595;</div>
+                <div class="flow-box">Initialize Population (Pop=100)</div>
+                <div class="arrow-down">&#8595;</div>
+                <div class="flow-box">Evaluate Fitness (Hard + Soft Constraints)</div>
+                <div class="arrow-down">&#8595;</div>
+                <div class="flow-row">
+                    <div style="display:flex;flex-direction:column;gap:15px;align-items:center;">
+                        <div style="color:#5a6a8a;font-size:14px;">Generation Loop</div>
+                        <div class="sub-flow">
+                            <div class="sub-item">
+                                <div class="sub-box">Tournament Selection</div>
+                                <div class="arrow" style="font-size:18px;">&#8595;</div>
+                                <div class="sub-box">Uniform Crossover</div>
+                                <div class="arrow" style="font-size:18px;">&#8595;</div>
+                                <div class="sub-box">Adaptive Mutation</div>
+                            </div>
+                            <div class="sub-item">
+                                <div class="sub-box">Elitism (Top 5)</div>
+                                <div class="arrow" style="font-size:18px;">&#8595;</div>
+                                <div class="sub-box">Parameter Adaptation</div>
+                                <div class="arrow" style="font-size:18px;">&#8595;</div>
+                                <div class="sub-box">Fitness Evaluation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="arrow-down">&#8595;</div>
+                <div class="flow-box decision">Termination?<br><span style="font-size:11px;">Gen>=1000<br>or Fit>=100</span></div>
+                <div class="arrow-down">&#8595;</div>
+                <div class="flow-box end">OUTPUT: Best Schedule</div>
+            </div>
+        </div>
+        <div class="footer">Course Scheduling System - University Timetabling Optimization</div>
+    </div>
+</body>
+</html>

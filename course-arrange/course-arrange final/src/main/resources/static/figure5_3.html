@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figure 5.3: Class Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #070a14; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 85% 85%, rgba(255, 87, 34, 0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(88, 101, 242, 0.05) 0%, transparent 60%), linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%); z-index: 0; }
+        .bg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
+        .container { position: relative; z-index: 1; max-width: 1100px; width: 100%; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 700; color: #00d4ff; text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); letter-spacing: 4px; margin-bottom: 10px; }
+        .header .subtitle { font-size: 18px; color: #5a6a8a; letter-spacing: 2px; }
+        .content-box { background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+        .figure-title { font-family: 'Orbitron', sans-serif; font-size: 22px; color: #00d4ff; text-align: center; margin-bottom: 25px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.4); letter-spacing: 3px; }
+        .diagram { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .class-box { background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 10px; padding: 0; min-width: 160px; overflow: hidden; }
+        .class-header { background: linear-gradient(90deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 212, 255, 0.1) 100%); padding: 10px 15px; text-align: center; border-bottom: 1px solid rgba(0, 212, 255, 0.2); }
+        .class-name { font-family: 'Orbitron', sans-serif; font-size: 13px; color: #00d4ff; letter-spacing: 1px; }
+        .class-body { padding: 10px 12px; }
+        .method { font-size: 11px; color: #8ba4c7; padding: 4px 0; border-bottom: 1px dashed rgba(0, 212, 255, 0.1); }
+        .method:last-child { border: none; }
+        .connector { color: rgba(0, 212, 255, 0.4); font-size: 20px; display: flex; align-items: center; }
+        .legend { display: flex; justify-content: center; gap: 30px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0, 212, 255, 0.1); }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #8ba4c7; }
+        .legend-line { width: 30px; height: 2px; }
+        .legend-line.assoc { background: #00d4ff; }
+        .legend-line.compo { background: #00e676; }
+        .legend-line.inherit { background: #7c4dff; }
+        .footer { text-align: center; margin-top: 25px; color: #5a6a8a; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header"><h1>FIGURE 5.3</h1><p class="subtitle">Class Diagram</p></div>
+        <div class="content-box">
+            <div class="figure-title">CORE CLASSES & RELATIONSHIPS</div>
+            <div class="diagram">
+                <div class="class-box"><div class="class-header"><div class="class-name">&#128204; Bootstrap</div></div><div class="class-body"><div class="method">- rooms: HashMap</div><div class="method">- tasks: HashMap</div><div class="method">- timeslots: HashMap</div><div class="method">+ createTable()</div><div class="method">+ getNumTables()</div></div></div>
+                <div class="connector">&#8594;</div>
+                <div class="class-box"><div class="class-header"><div class="class-name">&#128204; Individual</div></div><div class="class-body"><div class="method">- chromosome: int[]</div><div class="method">- fitness: double</div><div class="method">+ getGene()</div><div class="method">+ setGene()</div><div class="method">+ getFitness()</div></div></div>
+                <div class="connector">&#8594;</div>
+                <div class="class-box"><div class="class-header"><div class="class-name">&#128204; Population</div></div><div class="class-body"><div class="method">- individuals: Individual[]</div><div class="method">- size: int</div><div class="method">+ getFittest()</div><div class="method">+ shuffle()</div><div class="method">+ size()</div></div></div>
+            </div>
+            <div style="text-align:center;margin:15px 0;color:rgba(0,212,255,0.4);">&#8595;</div>
+            <div class="diagram">
+                <div class="class-box"><div class="class-header"><div class="class-name">&#128204; GA</div></div><div class="class-body"><div class="method">- popSize: int</div><div class="method">- mutRate: double</div><div class="method">- crossRate: double</div><div class="method">+ initPopulation()</div><div class="method">+ crossover()</div><div class="method">+ mutate()</div></div></div>
+                <div class="connector" style="color:#7c4dff;">&#8594; extends</div>
+                <div class="class-box" style="border-color:rgba(124,77,255,0.5);"><div class="class-header" style="background:linear-gradient(90deg,rgba(124,77,255,0.2),rgba(124,77,255,0.1));"><div class="class-name" style="color:#7c4dff;">&#128204; AdaptiveGA</div></div><div class="class-body"><div class="method">- diversityThreshold</div><div class="method">- minMutRate</div><div class="method">- maxMutRate</div><div class="method">+ adaptParameters()</div><div class="method">+ calcDiversity()</div></div></div>
+            </div>
+            <div style="text-align:center;margin:15px 0;color:rgba(0,212,255,0.4);">&#8595;</div>
+            <div class="diagram">
+                <div class="class-box"><div class="class-header"><div class="class-name">&#128204; FitnessCalculator</div></div><div class="class-body"><div class="method">- bootstrap: Bootstrap</div><div class="method">+ calcFitness()</div><div class="method">+ calcHardPenalty()</div><div class="method">+ calcSoftScore()</div><div class="method">+ calcResource()</div></div></div>
+                <div class="connector">&#8594;</div>
+                <div class="class-box"><div class="class-header"><div class="class-name">&#128204; ExperimentAnalyzer</div></div><div class="class-body"><div class="method">- history: List</div><div class="method">+ runComparison()</div><div class="method">+ getConvergence()</div><div class="method">+ recordData()</div></div></div>
+            </div>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-line assoc"></div>Association</div>
+                <div class="legend-item"><div class="legend-line inherit"></div>Inheritance</div>
+                <div class="legend-item"><div class="legend-line compo"></div>Composition</div>
+            </div>
+        </div>
+        <div class="footer">Course Scheduling System - University Timetabling Optimization</div>
+    </div>
+</body>
+</html>

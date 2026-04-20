@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class Management</title>
+</head>
+<body>
+<div id="app">
+    <!--Search Box-->
+    <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+        <el-form-item label="Class Name：">
+            <el-input v-model="searchForm.classesName" placeholder="Fuzzy Search"></el-input>
+        </el-form-item>
+        <el-form-item label="Course Name：">
+            <el-input v-model="searchForm.course.courseName" placeholder="Fuzzy Search"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <el-button type="primary" @click="selectByCondition">Search</el-button>
+        </el-form-item>
+    </el-form>
+
+    <!--Batch-->
+    <el-row>
+        <el-button type="danger" plain @click="deleteByIds">Batch Delete</el-button>
+    </el-row>
+
+    <!--    Table-->
+    <el-table
+            :data="tableData"
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+    >
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                type="index"
+                align="center"
+                label="ID">
+        </el-table-column>
+        <el-table-column
+                prop="classesName"
+                label="Class Name"
+                align="center">
+        </el-table-column>
+        <el-table-column
+                prop="course.courseName"
+                label="Course Name"
+                align="center">
+        </el-table-column>
+        <el-table-column
+                prop="size"
+                label="Number"
+                align="center">
+        </el-table-column>
+        <el-table-column
+                prop="remark"
+                label="Remark"
+                align="center">
+        </el-table-column>
+
+        <el-table-column label="Operation" align="center">
+            <template slot-scope="scope">
+                <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">Edit
+                </el-button>
+                <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)">Delete
+                </el-button>
+            </template>
+        </el-table-column>
+
+    </el-table>
+
+    <!--Edit Dialog   -->
+    <el-dialog title="EditCourse Binding" :visible.sync="updateFormVisible" width="70%">
+        <!--Search Box-->
+        <el-form :inline="true" :model="searchForm2" class="demo-form-inline">
+            <el-form-item label="Course Code：">
+                <el-input v-model="searchForm2.code" placeholder="Fuzzy Search"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Course Name：">
+                <el-input v-model="searchForm2.courseName" placeholder="Fuzzy Search"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="selectByCondition2">Search</el-button>
+            </el-form-item>
+        </el-form>
+        <!--Course Table-->
+        <el-table
+                :data="tableData2"
+                style="width: 100%"
+                @selection-change="handleSelectionChange"
+        >
+            <el-table-column
+                    prop="code"
+                    label="Course Code"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="courseName"
+                    label="Course Name"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="remark"
+                    label="Remark"
+                    align="center">
+            </el-table-column>
+
+            <el-table-column label="Operation" align="center">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            type="primary"
+                            @click="handleEdit2(scope.$index, scope.row)">Select
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <!--Pagination-->
+        <div class="block">
+            <el-pagination
+                    @size-change="handleSizeChange2"
+                    @current-change="handleCurrentChange2"
+                    :current-page="currentPage2"
+                    :page-sizes="[3, 6, 9]"
+                    :page-size="pageSize2"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalCount2">
+            </el-pagination>
+        </div>
+
+        <!--Selected Result -->
+        <el-form :inline="true" :model="cclassesForm" class="demo-form-inline" style="margin-top: 20px">
+            <el-form-item label="Class Name：">
+                <el-input v-model="cclassesForm.classesName" :disabled="true" style="width:370px"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Course Name：">
+                <el-input v-model="cclassesForm.course.courseName" :disabled="true"></el-input>
+            </el-form-item>
+
+            <br>
+            <el-form-item label="Number：">
+                <el-input v-model="cclassesForm.size" ></el-input>
+            </el-form-item>
+            <el-form-item label="Remark：">
+                <el-input v-model="cclassesForm.remark" style="width:370px"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="updateCclass">Submit</el-button>
+            </el-form-item>
+
+        </el-form>
+    </el-dialog>
+
+
+    <!--Pagination-->
+    <div class="block">
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 15, 20]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalCount">
+        </el-pagination>
+    </div>
+
+</div>
+
+
+<!--Import Resources-->
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<script src="js/axios-0.18.0.js"></script>
+
+
+<script>
+    //Create Vue core object
+    new Vue({
+        el: "#app",
+        mounted() {
+            this.selectByCondition();
+            //Query course
+            this.selectByCondition2();
+        },
+        methods: {
+
+            //Edit  Delete
+            handleEdit(index, row) {
+                //Fill data using JSON to break model binding
+                this.cclassesForm = JSON.parse(JSON.stringify(row));
+                //Open edit form
+                this.updateFormVisible = true;
+            },
+
+            handleDelete(index, row) {
+                this.multipleSelection[0] = row;
+                this.deleteByIds();
+            },
+
+            //Search
+            selectByCondition() {
+                var _this = this;
+                axios({
+                    method: "post",
+                    url: "/cclasses/selectByCondition?"+
+                        "currentPage=" +_this.currentPage+"&pageSize="+_this.pageSize,
+                    data: this.searchForm
+                }).then(function (resp) {
+                    //Set table data
+                    _this.tableData = resp.data.list;
+
+                    _this.totalCount = resp.data.total;
+                })
+            },
+
+
+            //Pagination
+            handleSizeChange(val) {
+                //Reset page size
+                this.pageSize = val;
+                //Search again
+                this.selectByCondition();
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                //Search again
+                this.selectByCondition();
+            },
+
+
+            //Selection change event
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+
+            //Batch delete
+            deleteByIds() {
+                var _this = this;
+                //Not selected
+                if (this.multipleSelection.length == 0){
+                    //Show message
+                    _this.$message({
+                        message: 'No items selected!',
+                        type: 'error',
+                        center: true
+                    });
+                }else {
+                    this.$confirm('This operation will delete the data, continue?', "Confirm", {
+                        confirmButtonText: "Confirm",
+                        cancelButtonText: "Cancel",
+                        type: "warning"
+                    }).then(() => {
+                        //User clicked confirm button
+                        for (let i = 0; i < this.multipleSelection.length; i++) {
+                            this.selectIds[i] = this.multipleSelection[i].id;
+                        }
+                        //Send ajax request
+                        axios({
+                            method: "post",
+                            url: '/cclasses/deleteByIds',
+                            data: _this.selectIds
+                        }).then(function (resp) {
+                            if (resp.data == "success") {
+                                //Delete successful, searching again
+                                _this.selectByCondition();
+                                //Show message
+                                _this.$message({
+                                    message: 'Operation success',
+                                    type: 'success',
+                                    center: true
+                                });
+                            }
+
+                        })
+                    })
+                }
+
+            },
+
+
+            //Submit update form
+            updateCclass() {
+                var _this = this;
+                //Send ajax request
+                axios({
+                    method: "post",
+                    url: '/cclasses/update',
+                    data: _this.cclassesForm
+                }).then(function (resp) {
+                    if (resp.data == "success") {
+                        //Close dialog
+                        _this.updateFormVisible = false;
+                        //Show message
+                        _this.$message({
+                            message: 'Operation success',
+                            type: 'success',
+                            center: true
+                        });
+                        //Search again
+                        _this.selectByCondition();
+                    }else {
+                        //Show message
+                        _this.$message({
+                            message: 'Course Binding already exists',
+                            type: 'error',
+                            center: true
+                        });
+                    }
+                })
+            },
+
+
+            //Select edit
+            handleEdit2(index, row) {
+                //Fill data using JSON to break model binding
+                this.cclassesForm.course = JSON.parse(JSON.stringify(row));
+            },
+            //Course search
+            selectByCondition2() {
+                var _this = this;
+                axios({
+                    method: "post",
+                    url: "/course/selectByCondition?" +
+                        "currentPage=" + _this.currentPage2 + "&pageSize=" + _this.pageSize2,
+                    data: this.searchForm2
+                }).then(function (resp) {
+                    //Set table data
+                    _this.tableData2 = resp.data.list;
+                    _this.totalCount2 = resp.data.total;
+                })
+            },
+            //Course pagination
+            handleSizeChange2(val) {
+                //Reset page size
+                this.pageSize2 = val;
+                //Search again
+                this.selectByCondition2();
+            },
+            handleCurrentChange2(val) {
+                this.currentPage2 = val;
+                //Search again
+                this.selectByCondition2();
+            },
+
+        },
+
+
+        //Data
+        data() {
+            return {
+                //Pagination
+                //Current page
+                currentPage: 1,
+                //Total pages
+                totalCount: 0,
+                //Current items
+                pageSize: 5,
+
+
+                //Selected array
+                selectIds: [],
+
+                //Update visible
+                updateFormVisible: false,
+                searchForm: {
+                    classesName: '',
+                    //Must define, otherwise controller won't create mapper and will report null
+                    course:{
+                        courseName:''
+                    },
+                },
+
+                //Add form
+                cclassesForm: {
+                    course: {},
+                    classesName: '',
+                    size:'',
+                    remark:''
+                },
+
+                //Selected values
+                multipleSelection: [],
+
+                //Table data
+                tableData: [],
+
+
+                //Assign Course Binding
+                //Current page
+                currentPage2: 1,
+                //Total pages
+                totalCount2: 0,
+                //Current items
+                pageSize2: 3,
+                //Search form
+                searchForm2: {
+                    code: '',
+                    courseName: ''
+                },
+                tableData2: [],
+
+
+            }
+        }
+    })
+
+</script>
+
+
+</body>
+</html>

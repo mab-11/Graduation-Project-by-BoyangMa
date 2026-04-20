@@ -1,0 +1,8 @@
+@media print {
+
+    /*打印不显示打印按钮*/
+    .print-button-container {
+        display: none !important;
+    }
+
+}

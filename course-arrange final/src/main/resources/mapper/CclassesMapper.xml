@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxw.mapper.CclassesMapper">
+
+    <resultMap id="CclassesResultMap" type="cclasses">
+        <result property="classesName" column="cc_name"/>
+        <result property="id" column="cc_id"/>
+        <result property="remark" column="cc_remark"/>
+        <result property="size" column="cc_size"/>
+        <association property="course" column="course_id" >
+            <result property="id" column="c_id"/>
+            <result property="code" column="c_code"/>
+            <result property="courseName" column="c_name"/>
+        </association>
+    </resultMap>
+
+    <!--id查询 -->
+    <resultMap id="CclassesResultMap2" type="cclasses">
+        <result property="classesName" column="cc_name"/>
+        <result property="id" column="cc_id"/>
+        <result property="remark" column="cc_remark"/>
+        <association property="course" column="course_id" select="com.pxw.mapper.CourseMapper.selectById" />
+    </resultMap>
+
+
+    <select id="selectByCondition" resultMap="CclassesResultMap">
+        select * from classes_course ,course
+        <where>
+            <if test="classesName != null and classesName != ''">
+                and cc_name like "%" #{classesName} "%"
+            </if>
+            <if test="course.courseName != null and course.courseName != ''">
+                and c_name like "%" #{course.courseName} "%"
+            </if>
+                and course_id = c_id
+        </where>
+        order by cc_name
+    </select>
+
+    <delete id="deleteByIds">
+        delete from classes_course where cc_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

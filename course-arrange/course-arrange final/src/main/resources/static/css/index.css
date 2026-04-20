@@ -1,0 +1,27 @@
+@import "base.css";
+
+
+
+ #nav_top_right{
+     height: 60px;
+     display: flex;
+     justify-content: right;
+     margin-right: 30px;
+     align-items: center;
+     color: white;
+ }
+
+ .el-header{
+     background-color:rgb(70, 77, 83) ;
+ }
+
+#nav_top_left{
+    height: 60px;
+    width: 142px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+
+}

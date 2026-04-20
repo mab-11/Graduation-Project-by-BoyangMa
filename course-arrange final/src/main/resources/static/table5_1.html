@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table 5.1: REST API Endpoints</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #070a14; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%), linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%); z-index: 0; }
+        .bg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
+        .container { position: relative; z-index: 1; max-width: 900px; width: 100%; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 700; color: #00d4ff; text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); letter-spacing: 4px; }
+        .content-box { background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+        .table-title { font-family: 'Orbitron', sans-serif; font-size: 18px; color: #00d4ff; text-align: center; margin-bottom: 20px; letter-spacing: 2px; }
+        .data-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden; }
+        .data-table th { background: rgba(0, 212, 255, 0.15); color: #00d4ff; font-family: 'Orbitron', sans-serif; font-size: 11px; padding: 12px; text-align: center; }
+        .data-table td { background: rgba(0, 0, 0, 0.4); color: #c0c8d8; font-size: 12px; padding: 10px; text-align: center; border-top: 1px solid rgba(0, 212, 255, 0.08); }
+        .method { font-family: 'Orbitron', sans-serif; font-size: 10px; padding: 4px 8px; border-radius: 4px; }
+        .method.get { background: rgba(0, 230, 118, 0.2); color: #00e676; }
+        .method.post { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .method.put { background: rgba(255, 152, 0, 0.2); color: #ff9800; }
+        .method.delete { background: rgba(245, 108, 108, 0.2); color: #f56c6c; }
+        .url { font-family: monospace; font-size: 11px; color: #8ba4c7; }
+        .footer { text-align: center; margin-top: 25px; color: #5a6a8a; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header"><h1>TABLE 5.1</h1></div>
+        <div class="content-box">
+            <div class="table-title">REST API ENDPOINTS</div>
+            <table class="data-table">
+                <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th><th>Parameters</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="method post">POST</span></td><td class="url">/courseTable/generate</td><td>Generate schedule</td><td>-</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/courseTable/list</td><td>List all schedules</td><td>-</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/courseTable/{id}</td><td>Get schedule by ID</td><td>id</td></tr>
+                    <tr><td><span class="method delete">DELETE</span></td><td class="url">/courseTable/{id}</td><td>Delete schedule</td><td>id</td></tr>
+                    <tr><td><span class="method post">POST</span></td><td class="url">/courseTable/runComparison</td><td>Run algorithm comparison</td><td>name</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/courseTable/convergence</td><td>Get convergence data</td><td>-</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/courseTable/history</td><td>Get experiment history</td><td>-</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/task/list</td><td>List all tasks</td><td>-</td></tr>
+                    <tr><td><span class="method post">POST</span></td><td class="url">/task/add</td><td>Add new task</td><td>task</td></tr>
+                    <tr><td><span class="method put">PUT</span></td><td class="url">/task/update</td><td>Update task</td><td>task</td></tr>
+                    <tr><td><span class="method delete">DELETE</span></td><td class="url">/task/{id}</td><td>Delete task</td><td>id</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/teacher/list</td><td>List teachers</td><td>-</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/room/list</td><td>List rooms</td><td>-</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/class/list</td><td>List classes</td><td>-</td></tr>
+                    <tr><td><span class="method get">GET</span></td><td class="url">/user/checkLogin</td><td>Check login status</td><td>-</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="footer">Course Scheduling System - REST API</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxw.mapper.ClassesMapper">
+
+    <resultMap id="ClassesResultMap" type="classes">
+        <result property="classesName" column="c_name"></result>
+    </resultMap>
+
+    <select id="selectByCondition" resultMap="ClassesResultMap">
+        select * from classes
+        <where>
+            <if test="classes.classesName != null and classes.classesName != ''">
+                and c_name like "%" #{classes.classesName} "%"
+            </if>
+            <if test="classes.size !=null ">
+                and size = #{classes.size}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from classes where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

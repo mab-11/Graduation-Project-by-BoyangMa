@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table 1.2: Solution Space Complexity Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            background: #070a14;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 85%, rgba(255, 87, 34, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(88, 101, 242, 0.05) 0%, transparent 60%),
+                linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%);
+            z-index: 0;
+        }
+
+        .bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #00d4ff;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 18px;
+            color: #5a6a8a;
+            letter-spacing: 2px;
+        }
+
+        .table-box {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .table-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+            letter-spacing: 3px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.25) 0%, rgba(88, 101, 242, 0.15) 100%);
+            color: #00d4ff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            padding: 18px 15px;
+            text-align: center;
+            border: none;
+        }
+
+        .data-table th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        .data-table th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        .data-table td {
+            background: rgba(0, 0, 0, 0.4);
+            color: #c0c8d8;
+            font-size: 15px;
+            padding: 16px 15px;
+            text-align: center;
+            border: none;
+            border-top: 1px solid rgba(0, 212, 255, 0.08);
+        }
+
+        .data-table tr:last-child td:first-child {
+            border-bottom-left-radius: 12px;
+        }
+
+        .data-table tr:last-child td:last-child {
+            border-bottom-right-radius: 12px;
+        }
+
+        .data-table tr:hover td {
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .data-table .highlight {
+            color: #00e676;
+            font-weight: 600;
+        }
+
+        .data-table .note {
+            font-size: 12px;
+            color: #5a6a8a;
+        }
+
+        .analysis-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .analysis-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(7, 10, 20, 0.9) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 14px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
+        }
+
+        .analysis-card h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .analysis-card p {
+            color: #8ba4c7;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.1) 0%, rgba(7, 10, 20, 0.9) 100%);
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .formula-box h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: #7c4dff;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .formula {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            color: #00d4ff;
+            letter-spacing: 1px;
+        }
+
+        .formula .var {
+            color: #ff9800;
+        }
+
+        .formula .result {
+            color: #00e676;
+            font-weight: 700;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #5a6a8a;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .analysis-section {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .table-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header">
+            <h1>TABLE 1.2</h1>
+            <p class="subtitle">Solution Space Complexity Analysis</p>
+        </div>
+
+        <div class="table-box">
+            <div class="table-title">PROBLEM SCALE & COMPLEXITY METRICS</div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Scale</th>
+                        <th>Tasks (n)</th>
+                        <th>Timeslots (t)</th>
+                        <th>Rooms (r)</th>
+                        <th>Search Space</th>
+                        <th>Difficulty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Small</td>
+                        <td>20</td>
+                        <td>20</td>
+                        <td>8</td>
+                        <td>(20×20)<sup>20</sup> ≈ 10<sup>260</sup></td>
+                        <td><span class="highlight">Low</span></td>
+                    </tr>
+                    <tr>
+                        <td>Medium</td>
+                        <td>50</td>
+                        <td>25</td>
+                        <td>15</td>
+                        <td>(25×15)<sup>50</sup> ≈ 10<sup>590</sup></td>
+                        <td><span class="highlight">Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td>Large</td>
+                        <td>100</td>
+                        <td>25</td>
+                        <td>25</td>
+                        <td>(25×25)<sup>100</sup> ≈ 10<sup>1400</sup></td>
+                        <td><span class="highlight">High</span></td>
+                    </tr>
+                    <tr>
+                        <td>Very Large</td>
+                        <td>200</td>
+                        <td>30</td>
+                        <td>40</td>
+                        <td>(30×40)<sup>200</sup> ≈ 10<sup>3450</sup></td>
+                        <td><span class="note">Very High</span></td>
+                    </tr>
+                    <tr>
+                        <td>Real World</td>
+                        <td>500+</td>
+                        <td>35</td>
+                        <td>50+</td>
+                        <td>(35×50)<sup>500</sup> ≈ 10<sup>12750</sup></td>
+                        <td><span class="note">Extremely High</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="analysis-section">
+                <div class="analysis-card">
+                    <h4>&#9889; NP-Hard Nature</h4>
+                    <p>Course timetabling is proven to be NP-hard, meaning there is no known polynomial-time algorithm to find optimal solutions. The search space grows exponentially with problem size, making exhaustive search impossible for realistic instances.</p>
+                </div>
+                <div class="analysis-card">
+                    <h4>&#127919; Heuristic Approach Required</h4>
+                    <p>Due to complexity, we use Genetic Algorithm (GA) which explores the solution space probabilistically. AMOGA adapts parameters dynamically to improve convergence and solution quality.</p>
+                </div>
+                <div class="analysis-card">
+                    <h4>&#128200; Constraint Satisfaction</h4>
+                    <p>Hard constraints must be satisfied first (fitness ≥ 100). Soft constraints then optimize quality. The algorithm prioritizes feasible solutions before optimization.</p>
+                </div>
+                <div class="analysis-card">
+                    <h4>&#128202; Multi-Objective</h4>
+                    <p>Multiple objectives compete: minimize conflicts, maximize preferences, balance resources. The adaptive fitness function balances these competing goals effectively.</p>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <h4>SEARCH SPACE FORMULA</h4>
+                <div class="formula">
+                    |S| = (<span class="var">t × r</span>)<sup><span class="var">n</span></sup> = (<span class="var">Timeslots × Rooms</span>)<sup><span class="var">Tasks</span></sup>
+                    <br><br>
+                    <span class="result">Example: 25 × 25 = 625 possibilities per task
+                    <br>625<sup>100</sup> ≈ 10<sup>268</sup> total combinations</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Course Scheduling System - University Timetabling Optimization
+        </div>
+    </div>
+</body>
+</html>

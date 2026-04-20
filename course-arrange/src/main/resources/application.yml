@@ -1,0 +1,17 @@
+#datasource
+spring:
+  datasource:   #  &amp; -> & useSSL=false要放在最后
+    url: jdbc:mysql://localhost:3306/pxw_bs?serverTimezone=UTC&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  web:
+    resources:
+      static-locations: classpath:/static/   #静态资源放行 url路径也不用加static了。
+      
+mybatis:
+  config-location: #指定核心配置文件
+  mapper-locations: classpath:mapper/*Mapper.xml  #mapper映射文件路径
+  type-aliases-package: com.pxw.pojo  #类型别名
+  
+

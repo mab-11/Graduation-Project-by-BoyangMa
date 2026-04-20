@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figure 1.1: Structure of University Course Timetabling Problem</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            background: #070a14;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 85%, rgba(255, 87, 34, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(88, 101, 242, 0.05) 0%, transparent 60%),
+                linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%);
+            z-index: 0;
+        }
+
+        .bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #00d4ff;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 18px;
+            color: #5a6a8a;
+            letter-spacing: 2px;
+        }
+
+        .figure-box {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .figure-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+            letter-spacing: 3px;
+        }
+
+        .entities-section {
+            margin-bottom: 40px;
+        }
+
+        .section-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .entities-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .entity-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(7, 10, 20, 0.9) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px 25px;
+            text-align: center;
+            min-width: 160px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .entity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #0088ff, #00d4ff);
+        }
+
+        .entity-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+            border-color: rgba(0, 212, 255, 0.6);
+        }
+
+        .entity-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .entity-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: #00d4ff;
+            letter-spacing: 2px;
+        }
+
+        .entity-count {
+            font-size: 13px;
+            color: #5a6a8a;
+            margin-top: 8px;
+        }
+
+        .arrow-section {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .arrow-section .arrow {
+            font-size: 36px;
+            color: #00d4ff;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        .constraints-section {
+            margin-bottom: 40px;
+        }
+
+        .constraints-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .constraint-card {
+            background: rgba(255, 152, 0, 0.08);
+            border: 1px solid rgba(255, 152, 0, 0.25);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .constraint-card:hover {
+            background: rgba(255, 152, 0, 0.15);
+            border-color: rgba(255, 152, 0, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .constraint-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            color: #ff9800;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .constraint-list {
+            list-style: none;
+            font-size: 13px;
+            color: #8ba4c7;
+            line-height: 1.8;
+        }
+
+        .constraint-list li {
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .constraint-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #ff9800;
+        }
+
+        .solution-section {
+            background: linear-gradient(135deg, rgba(0, 230, 118, 0.12) 0%, rgba(7, 10, 20, 0.9) 100%);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+        }
+
+        .solution-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: #00e676;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .solution-desc {
+            color: #8ba4c7;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .solution-desc .highlight {
+            color: #00e676;
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #5a6a8a;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .constraints-grid {
+                grid-template-columns: 1fr;
+            }
+            .entities-grid {
+                gap: 15px;
+            }
+            .entity-card {
+                min-width: 130px;
+                padding: 20px 15px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header">
+            <h1>FIGURE 1.1</h1>
+            <p class="subtitle">Structure of University Course Timetabling Problem</p>
+        </div>
+
+        <div class="figure-box">
+            <div class="figure-title">PROBLEM STRUCTURE ANALYSIS</div>
+
+            <div class="entities-section">
+                <div class="section-label">INPUT ENTITIES</div>
+                <div class="entities-grid">
+                    <div class="entity-card">
+                        <div class="entity-icon">&#128218;</div>
+                        <div class="entity-name">COURSES</div>
+                        <div class="entity-count">Subject to scheduling</div>
+                    </div>
+                    <div class="entity-card">
+                        <div class="entity-icon">&#128100;</div>
+                        <div class="entity-name">TEACHERS</div>
+                        <div class="entity-count">Time constraints</div>
+                    </div>
+                    <div class="entity-card">
+                        <div class="entity-icon">&#127970;</div>
+                        <div class="entity-name">ROOMS</div>
+                        <div class="entity-count">Capacity & Type</div>
+                    </div>
+                    <div class="entity-card">
+                        <div class="entity-icon">&#128101;</div>
+                        <div class="entity-name">CLASSES</div>
+                        <div class="entity-count">Student groups</div>
+                    </div>
+                    <div class="entity-card">
+                        <div class="entity-icon">&#128337;</div>
+                        <div class="entity-name">TIMESLOTS</div>
+                        <div class="entity-count">Weekly schedule</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow-section">
+                <div class="arrow">&#8595;</div>
+            </div>
+
+            <div class="constraints-section">
+                <div class="section-label">CONSTRAINT OPTIMIZATION</div>
+                <div class="constraints-grid">
+                    <div class="constraint-card">
+                        <div class="constraint-title">HARD CONSTRAINTS</div>
+                        <ul class="constraint-list">
+                            <li>One class, one course at same time</li>
+                            <li>One teacher, one course at same time</li>
+                            <li>One room, one course at same time</li>
+                            <li>Room capacity >= Class size</li>
+                            <li>Room type matches course type</li>
+                        </ul>
+                    </div>
+                    <div class="constraint-card">
+                        <div class="constraint-title">SOFT CONSTRAINTS</div>
+                        <ul class="constraint-list">
+                            <li>Teacher time preferences</li>
+                            <li>Course concentration (adjacent)</li>
+                            <li>Room balance utilization</li>
+                            <li>Day concentration</li>
+                            <li>Room type preference</li>
+                        </ul>
+                    </div>
+                    <div class="constraint-card">
+                        <div class="constraint-title">OBJECTIVE FUNCTION</div>
+                        <ul class="constraint-list">
+                            <li constraint violations</li>
+                            <li>Maximize soft>Minimize hard constraint satisfaction</li>
+                            <li>Maximize resource utilization</li>
+                            <li>Balance workloads</li>
+                            <li>Maximize overall fitness</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <div class="solution-title">&#127919; SOLUTION APPROACH</div>
+                <div class="solution-desc">
+                    <strong>Adaptive Multi-Objective Genetic Algorithm (AMOGA)</strong><br><br>
+                    <span class="highlight">Encoding:</span> Chromosome [timeslot, room] pairs for each task<br>
+                    <span class="highlight">Selection:</span> Tournament selection with elitism<br>
+                    <span class="highlight">Crossover:</span> Uniform crossover (pc=0.85)<br>
+                    <span class="highlight">Mutation:</span> Adaptive mutation rate (pm=0.01~0.3)<br>
+                    <span class="highlight">Fitness:</span> Multi-objective with penalty and reward
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Course Scheduling System - University Timetabling Optimization
+        </div>
+    </div>
+</body>
+</html>

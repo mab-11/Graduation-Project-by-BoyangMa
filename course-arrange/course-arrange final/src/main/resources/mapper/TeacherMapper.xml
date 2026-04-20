@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxw.mapper.TeacherMapper">
+
+    <resultMap id="TeacherResultMap" type="Teacher">
+        <result property="teacherName" column="t_name"></result>
+    </resultMap>
+
+    <select id="selectByCondition" resultMap="TeacherResultMap">
+        select * from teacher
+        <where>
+            <if test="teacher.teacherName != null and teacher.teacherName != ''">
+                and t_name like "%" #{teacher.teacherName} "%"
+            </if>
+            <if test="teacher.id != null and teacher.id != ''">
+                and id = #{teacher.id}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from teacher where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

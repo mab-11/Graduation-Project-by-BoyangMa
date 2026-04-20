@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxw.mapper.RoomMapper">
+
+    <resultMap id="RoomResultMap" type="Room">
+        <result property="roomName" column="r_name"></result>
+    </resultMap>
+
+    <select id="selectByCondition" resultMap="RoomResultMap">
+        select * from room
+        <where>
+            <if test="room.roomName != null and room.roomName != ''">
+                and r_name like "%" #{room.roomName} "%"
+            </if>
+            <if test="room.capacity !=null ">
+                and capacity = #{room.capacity}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from room where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

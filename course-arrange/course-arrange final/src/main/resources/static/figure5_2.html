@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figure 5.2: Database Schema</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #070a14; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 85% 85%, rgba(255, 87, 34, 0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(88, 101, 242, 0.05) 0%, transparent 60%), linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%); z-index: 0; }
+        .bg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
+        .container { position: relative; z-index: 1; max-width: 1100px; width: 100%; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 700; color: #00d4ff; text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); letter-spacing: 4px; margin-bottom: 10px; }
+        .header .subtitle { font-size: 18px; color: #5a6a8a; letter-spacing: 2px; }
+        .content-box { background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+        .figure-title { font-family: 'Orbitron', sans-serif; font-size: 22px; color: #00d4ff; text-align: center; margin-bottom: 30px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.4); letter-spacing: 3px; }
+        .tables-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .table-box { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px; padding: 20px; }
+        .table-name { font-family: 'Orbitron', sans-serif; font-size: 14px; color: #00d4ff; margin-bottom: 12px; text-align: center; letter-spacing: 1px; }
+        .field { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(0, 212, 255, 0.08); font-size: 12px; }
+        .field:last-child { border: none; }
+        .field-name { color: #c0c8d8; }
+        .field-type { color: #7c4dff; }
+        .pk { color: #ff9800; font-weight: 600; }
+        .fk { color: #00e676; }
+        .connector { text-align: center; padding: 10px; color: rgba(0, 212, 255, 0.4); font-size: 20px; }
+        .footer { text-align: center; margin-top: 30px; color: #5a6a8a; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header"><h1>FIGURE 5.2</h1><p class="subtitle">Database Schema</p></div>
+        <div class="content-box">
+            <div class="figure-title">MYSQL DATABASE SCHEMA</div>
+            <div class="tables-grid">
+                <div class="table-box"><div class="table-name">&#128218; course</div>
+                    <div class="field"><span class="field-name pk">id</span><span class="field-type">INT PK</span></div>
+                    <div class="field"><span class="field-name">course_name</span><span class="field-type">VARCHAR</span></div>
+                    <div class="field"><span class="field-name">course_type</span><span class="field-type">VARCHAR</span></div>
+                    <div class="field"><span class="field-name">hours</span><span class="field-type">INT</span></div>
+                </div>
+                <div class="table-box"><div class="table-name">&#128100; teacher</div>
+                    <div class="field"><span class="field-name pk">id</span><span class="field-type">INT PK</span></div>
+                    <div class="field"><span class="field-name">teacher_name</span><span class="field-type">VARCHAR</span></div>
+                    <div class="field"><span class="field-name">title</span><span class="field-type">VARCHAR</span></div>
+                    <div class="field"><span class="field-name">password</span><span class="field-type">VARCHAR</span></div>
+                </div>
+                <div class="table-box"><div class="table-name">&#127970; room</div>
+                    <div class="field"><span class="field-name pk">id</span><span class="field-type">INT PK</span></div>
+                    <div class="field"><span class="field-name">room_name</span><span class="field-type">VARCHAR</span></div>
+                    <div class="field"><span class="field-name">capacity</span><span class="field-type">INT</span></div>
+                    <div class="field"><span class="field-name">room_type</span><span class="field-type">VARCHAR</span></div>
+                </div>
+                <div class="table-box"><div class="table-name">&#128101; class</div>
+                    <div class="field"><span class="field-name pk">id</span><span class="field-type">INT PK</span></div>
+                    <div class="field"><span class="field-name">class_name</span><span class="field-type">VARCHAR</span></div>
+                    <div class="field"><span class="field-name">size</span><span class="field-type">INT</span></div>
+                    <div class="field"><span class="field-name">grade</span><span class="field-type">INT</span></div>
+                </div>
+                <div class="table-box"><div class="table-name">&#128203; task</div>
+                    <div class="field"><span class="field-name pk">id</span><span class="field-type">INT PK</span></div>
+                    <div class="field"><span class="field-name fk">course_id</span><span class="field-type">INT FK</span></div>
+                    <div class="field"><span class="field-name fk">teacher_id</span><span class="field-type">INT FK</span></div>
+                    <div class="field"><span class="field-name fk">class_id</span><span class="field-type">INT FK</span></div>
+                </div>
+                <div class="table-box"><div class="table-name">&#128337; timeslot</div>
+                    <div class="field"><span class="field-name pk">id</span><span class="field-type">INT PK</span></div>
+                    <div class="field"><span class="field-name">day</span><span class="field-type">INT</span></div>
+                    <div class="field"><span class="field-name">period</span><span class="field-type">INT</span></div>
+                    <div class="field"><span class="field-name">week</span><span class="field-type">INT</span></div>
+                </div>
+            </div>
+            <div class="connector">&#8595; &#8595; &#8595;</div>
+            <div class="table-box" style="max-width: 500px; margin: 0 auto;">
+                <div class="table-name">&#128202; coursedb (Schedule Results)</div>
+                <div class="field"><span class="field-name pk">id</span><span class="field-type">INT PK</span></div>
+                <div class="field"><span class="field-name fk">task_id</span><span class="field-type">INT FK</span></div>
+                <div class="field"><span class="field-name fk">timeslot_id</span><span class="field-type">INT FK</span></div>
+                <div class="field"><span class="field-name fk">room_id</span><span class="field-type">INT FK</span></div>
+            </div>
+        </div>
+        <div class="footer">Course Scheduling System - University Timetabling Optimization</div>
+    </div>
+</body>
+</html>

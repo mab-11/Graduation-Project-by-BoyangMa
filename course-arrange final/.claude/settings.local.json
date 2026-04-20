@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mysql:*)",
+      "Bash(mvn:*)",
+      "Bash(start course-arrange-app:*)",
+      "Bash(java:*)",
+      "Bash(python:*)",
+      "Bash(where mvn:*)",
+      "Bash(curl:*)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :8080)",
+      "Bash(taskkill:*)",
+      "Bash(cmd:*)",
+      "Bash(powershell:*)"
+    ]
+  }
+}

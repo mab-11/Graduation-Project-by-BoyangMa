@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Course Scheduling System</title>
+
+</head>
+
+<body>
+
+<div id="loginDiv" style="height: 400px">
+    <el-form ref="user" :model="user" label-width="80px">
+
+        <h1 id="loginMsg" style="font-family: Arial;">Course Scheduling System</h1>
+        <el-form-item label="Username:" prop="userName">
+            <el-input v-model="user.userName" style="margin-left: 15px"></el-input>
+        </el-form-item>
+        <el-form-item label="Password:" prop="password">
+            <el-input v-model="user.password" type="password"  style="margin-left: 15px"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Code:" prop="checkCode" v-if="false">
+            <el-row>
+                <el-col :span="12">
+                    <el-input v-model="user.checkCode" style="margin-left:15px;width:100px"></el-input>
+                </el-col>
+                <el-col :span="12" align="center ">
+                    <img v-bind:src="checkCodeImg" id="checkImg" @click="changeImg"
+                         style="margin-left:15px ;height:40px">
+                </el-col>
+            </el-row>
+        </el-form-item>
+
+        <div align="center">
+            <el-button type="primary" @click="login">Login</el-button>
+            <el-button type="info" @click="resetForm()">Reset</el-button>
+        </div>
+
+        <div align="right" style="width: 100%;margin-left: 50px ">
+            <el-link :underline="false" @click="changeUser" style="color:#ffd04b">Teacher Login</el-link>
+        </div>
+
+    </el-form>
+
+
+</div>
+
+
+<!--Import Resources-->
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<link href="css/login.css" rel="stylesheet">
+<script src="js/axios-0.18.0.js"></script>
+
+<script>
+
+
+    //Create Vue core object
+    new Vue({
+        el: "#loginDiv",
+        //Hook function
+        mounted() {
+
+            let split = (location + "").split("?")[1];
+            if (split == 1) {
+                this.$message({
+                    message: "You are not logged in!",
+                    type: "error",
+                    center: true
+                })
+            }
+        },
+
+        methods: {
+            //Refresh captcha
+            changeImg() {
+                this.checkCodeImg = "/user/checkCode?" + new Date().getMilliseconds()
+            },
+
+            //Submit form
+            login() {
+                //Form validation
+                var _this = this;
+                if (this.checkForm() == false) {
+                    this.$message({
+                        message: _this.errorMsg,
+                        type: "error",
+                        center: true
+                    })
+                } else {
+                    //Async request
+                    axios({
+                        method: "post",
+                        url: "/user/login",
+                        data: _this.user
+                    }).then(resp => {
+                        if (resp.data == "success") {
+                            //Prevent cache!
+                            location.href = "/index.html?" + new Date().getMilliseconds();
+                        } else {
+                            this.$message({
+                                message: resp.data,
+                                type: "error",
+                                center: true
+                            })
+                        }
+                    })
+                }
+            },
+
+            //Reset form
+            resetForm() {
+                this.$refs["user"].resetFields();
+            },
+
+            //Form validation
+            checkForm() {
+                //Get model
+                var name = this.user.userName;
+                var password = this.user.password;
+                var checkCode = this.user.checkCode;
+                if (name == 0) {
+                    this.errorMsg = "Please enter username";
+                    return false;
+                } else if (name.length > 8 || name.length < 3) {
+                    this.errorMsg = "Username must be 3-8 characters";
+                    return false;
+                }
+                if (password.length == 0) {
+                    this.errorMsg = "Please enter password";
+                    return false;
+                } else if (password.length > 12 || password.length < 6) {
+                    this.errorMsg = "Password must be 6-12 characters";
+                    return false;
+                }
+
+                return true;
+            },
+
+            //Change role
+            changeUser(){
+                location.href = "/t/login.html?" + new Date().getMilliseconds();
+            }
+        },
+
+        //Data
+        data() {
+            return {
+                checkCodeImg: "/user/checkCode",
+                errorMsg: "",
+                user: {
+                    userName: '',
+                    password: '',
+                    checkCode: ''
+                },
+
+
+            }
+        }
+
+    })
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pxw.mapper.TaskMapper">
+
+    <resultMap id="TaskResultMap" type="task">
+        <result property="startWeek" column="start_week"/>
+        <result property="endWeek" column="end_week"/>
+        <result property="weekNode" column="week_node"/>
+        <result property="teacher.id" column="t_id"/>
+        <result property="teacher.teacherName" column="t_name"/>
+        <result property="cclasses.id" column="cc_id"/>
+        <result property="cclasses.classesName" column="cc_name"/>
+        <result property="cclasses.size" column="cc_size"/>
+        <result property="cclasses.course.id" column="c_id" />
+        <result property="cclasses.course.courseName" column="c_name"/>
+        <result property="cclasses.course.code" column="c_code"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="TaskResultMap">
+        select task.id id ,start_week ,end_week ,week_node,
+        teacher.id t_id ,t_name ,
+        task.cc_id,cc_name,cc_size,
+        c_id,c_code,c_name
+        from task, teacher, course, classes_course
+        where
+            task.cc_id = classes_course.cc_id
+            and classes_course.course_id = course.c_id
+            and task.teacher_id = teacher.id
+
+    </select>
+
+    <select id="selectByCondition" resultMap="TaskResultMap">
+        select task.id id ,start_week ,end_week ,week_node,
+               teacher.id t_id ,t_name ,
+               task.cc_id,cc_name,cc_size,
+               c_id,c_code,c_name
+        from task, teacher, course, classes_course
+        <where>
+            <if test="cclasses.classesName != null and cclasses.classesName != '' ">
+               and cc_name like "%" #{cclasses.classesName} "%"
+            </if>
+            <if test="cclasses.course.courseName != null and cclasses.course.courseName != '' ">
+               and c_name like "%" #{cclasses.course.courseName} "%"
+            </if>
+            <if test="teacher.teacherName != null and teacher.teacherName != '' ">
+               and t_name like "%" #{teacher.teacherName} "%"
+            </if>
+            and task.cc_id = classes_course.cc_id
+            and classes_course.course_id = course.c_id
+            and task.teacher_id = teacher.id
+        </where>
+    </select>
+
+    <select id="selectByCondition2" resultMap="TaskResultMap">
+        select task.id id ,start_week ,end_week ,week_node,
+        teacher.id t_id ,t_name ,
+        task.cc_id,cc_name,cc_size,
+        c_id,c_code,c_name
+        from task, teacher, course, classes_course
+        <where>
+            <if test="cclasses.id != null and cclasses.id != '' ">
+                and task.cc_id = #{cclasses.id}
+            </if>
+            <if test="cclasses.course.id != null and cclasses.course.id != '' ">
+                and course.c_id = #{cclasses.course.id}
+            </if>
+            <if test="weekNode != null and weekNode != '' ">
+                and week_node = #{weekNode}
+            </if>
+            and task.cc_id = classes_course.cc_id
+            and classes_course.course_id = course.c_id
+            and task.teacher_id = teacher.id
+        </where>
+    </select>
+
+
+    <select id="selectById" resultMap="TaskResultMap">
+        select task.id id ,start_week ,end_week ,week_node,
+        teacher.id t_id ,t_name ,
+        task.cc_id,cc_name,cc_size,
+        c_id,c_code,c_name
+        from task, teacher, course, classes_course
+        where
+            task.cc_id = classes_course.cc_id
+            and classes_course.course_id = course.c_id
+            and task.teacher_id = teacher.id
+            and task.id = #{id}
+    </select>
+
+    <delete id="deleteByIds">
+        delete from task where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

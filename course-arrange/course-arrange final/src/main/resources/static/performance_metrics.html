@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Performance Evaluation Metrics</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #070a14; min-height: 100vh; padding: 20px; }
+        .bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%), linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%); z-index: 0; }
+        .bg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
+        .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; padding: 20px 0; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: #00d4ff; text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); letter-spacing: 4px; }
+        .section { background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 18px; color: #00d4ff; margin-bottom: 15px; letter-spacing: 2px; }
+        .description { color: #8ba4c7; font-size: 15px; line-height: 1.6; margin-bottom: 15px; }
+        .metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
+        .metric-card { background: rgba(0, 212, 255, 0.05); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px; padding: 20px; text-align: center; }
+        .metric-icon { font-size: 32px; margin-bottom: 10px; }
+        .metric-name { font-family: 'Orbitron', sans-serif; font-size: 14px; color: #00d4ff; margin-bottom: 8px; }
+        .metric-formula { font-family: 'Consolas', monospace; font-size: 12px; color: #8ba4c7; margin-bottom: 8px; }
+        .metric-desc { font-size: 13px; color: #5a6a8a; }
+        .highlight { color: #00e676; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(0, 212, 255, 0.1); }
+        th { font-family: 'Orbitron', sans-serif; color: #00d4ff; font-size: 14px; }
+        td { color: #8ba4c7; font-size: 14px; }
+        .chart-box { width: 100%; height: 300px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header"><h1>ABSTRACT: PERFORMANCE EVALUATION METHODOLOGY</h1></div>
+
+        <div class="section">
+            <div class="section-title">1. PERFORMANCE EVALUATION METRICS</div>
+            <div class="description">
+                This study evaluates the AMOGA algorithm using multiple performance metrics to comprehensively assess solution quality, algorithm efficiency, and constraint satisfaction.
+            </div>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">⏱</div>
+                    <div class="metric-name">EXECUTION TIME</div>
+                    <div class="metric-formula">T (milliseconds)</div>
+                    <div class="metric-desc">Time taken to find a feasible solution</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">✓</div>
+                    <div class="metric-name">CONSTRAINT SATISFACTION</div>
+                    <div class="metric-formula">(1 - conflicts/total) × 100%</div>
+                    <div class="metric-desc">Percentage of hard constraints satisfied</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-name">FITNESS SCORE</div>
+                    <div class="metric-formula">f = w_h×H + w_s×S + w_r×R</div>
+                    <div class="metric-desc">Multi-objective fitness evaluation</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-name">SUCCESS RATE</div>
+                    <div class="metric-formula">successful_runs / total_runs × 100%</div>
+                    <div class="metric-desc">Percentage of runs finding feasible solution</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">2. EVALUATION CRITERIA</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Definition</th>
+                        <th>Target</th>
+                        <th>Measurement Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hard Constraint Satisfaction</td>
+                        <td>All hard constraints must be satisfied</td>
+                        <td class="highlight">100%</td>
+                        <td>Count conflicts / total constraints</td>
+                    </tr>
+                    <tr>
+                        <td>Soft Constraint Score</td>
+                        <td>Quality of soft constraint optimization</td>
+                        <td class="highlight">> 80</td>
+                        <td>Weighted sum of preference scores</td>
+                    </tr>
+                    <tr>
+                        <td>Execution Time</td>
+                        <td>Algorithm runtime efficiency</td>
+                        <td class="highlight">< 30s</td>
+                        <td>System.currentTimeMillis()</td>
+                    </tr>
+                    <tr>
+                        <td>Convergence Generation</td>
+                        <td>Speed of finding optimal solution</td>
+                        <td class="highlight">< 500</td>
+                        <td>Generation count when best fitness stabilizes</td>
+                    </tr>
+                    <tr>
+                        <td>Success Rate</td>
+                        <td>Algorithm reliability</td>
+                        <td class="highlight">> 95%</td>
+                        <td>Successful runs / total runs × 100</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">3. BASELINE COMPARISON</div>
+            <div class="description">
+                The AMOGA algorithm is compared against three baseline algorithms to validate its effectiveness:
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Description</th>
+                        <th>Parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fixed GA</td>
+                        <td>Standard genetic algorithm with fixed parameters</td>
+                        <td>Mutation=0.01, Crossover=0.9, Pop=100</td>
+                    </tr>
+                    <tr>
+                        <td>Simulated Annealing</td>
+                        <td>Metropolis-based optimization</td>
+                        <td>T₀=1000, α=0.95, Iterations=10000</td>
+                    </tr>
+                    <tr>
+                        <td>PSO</td>
+                        <td>Particle Swarm Optimization</td>
+                        <td>w=0.7, c₁=1.5, c₂=1.5, Pop=100</td>
+                    </tr>
+                    <tr>
+                        <td>AMOGA</td>
+                        <td>Adaptive Multi-Objective Genetic Algorithm</td>
+                        <td>Adaptive mutation/crossover rates</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">4. EXPERIMENTAL DATASETS</div>
+            <div class="description">
+                Performance is evaluated on datasets of varying complexity to assess scalability:
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dataset</th>
+                        <th>Tasks</th>
+                        <th>Rooms</th>
+                        <th>Teachers</th>
+                        <th>Classes</th>
+                        <th>Time Slots</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Small</td>
+                        <td>30</td>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>5</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>Medium</td>
+                        <td>80</td>
+                        <td>20</td>
+                        <td>30</td>
+                        <td>10</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>Large</td>
+                        <td>150</td>
+                        <td>40</td>
+                        <td>60</td>
+                        <td>20</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>Extra Large</td>
+                        <td>300</td>
+                        <td>60</td>
+                        <td>100</td>
+                        <td>40</td>
+                        <td>25</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

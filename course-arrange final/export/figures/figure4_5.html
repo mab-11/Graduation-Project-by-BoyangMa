@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figure 4.5: Mutation Operators</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: #070a14; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 15% 15%, rgba(0, 212, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 85% 85%, rgba(255, 87, 34, 0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(88, 101, 242, 0.05) 0%, transparent 60%), linear-gradient(180deg, #070a14 0%, #0d1220 50%, #070a14 100%); z-index: 0; }
+        .bg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px); background-size: 40px 40px; }
+        .container { position: relative; z-index: 1; max-width: 1000px; width: 100%; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 700; color: #00d4ff; text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); letter-spacing: 4px; margin-bottom: 10px; }
+        .header .subtitle { font-size: 18px; color: #5a6a8a; letter-spacing: 2px; }
+        .content-box { background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(7, 10, 20, 0.95) 100%); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+        .figure-title { font-family: 'Orbitron', sans-serif; font-size: 22px; color: #00d4ff; text-align: center; margin-bottom: 30px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.4); letter-spacing: 3px; }
+        .operators { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .op-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 14px; padding: 20px; }
+        .op-title { font-family: 'Orbitron', sans-serif; font-size: 14px; color: #00d4ff; margin-bottom: 15px; letter-spacing: 1px; text-align: center; }
+        .gene-row { display: flex; gap: 5px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .gene { width: 28px; height: 28px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #8ba4c7; }
+        .gene.mutated { background: rgba(255, 152, 0, 0.2); border-color: #ff9800; color: #ff9800; }
+        .arrow { text-align: center; color: rgba(0, 212, 255, 0.5); font-size: 18px; margin: 8px 0; }
+        .params-row { display: flex; justify-content: center; gap: 40px; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(0, 212, 255, 0.1); }
+        .param { text-align: center; }
+        .param-label { font-size: 12px; color: #5a6a8a; }
+        .param-value { font-family: 'Orbitron', sans-serif; font-size: 18px; color: #00d4ff; }
+        .footer { text-align: center; margin-top: 30px; color: #5a6a8a; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header">
+            <h1>FIGURE 4.5</h1>
+            <p class="subtitle">Mutation Operators</p>
+        </div>
+        <div class="content-box">
+            <div class="figure-title">MUTATION OPERATORS (Adaptive Rate)</div>
+            <div class="operators">
+                <div class="op-card">
+                    <div class="op-title">SWAP MUTATION</div>
+                    <div class="gene-row">
+                        <div class="gene">1</div><div class="gene">3</div><div class="gene mutated">5</div><div class="gene">7</div>
+                        <div class="gene">2</div><div class="gene">4</div><div class="gene mutated">6</div><div class="gene">8</div>
+                    </div>
+                    <div class="arrow">&#8595;</div>
+                    <div class="gene-row">
+                        <div class="gene">1</div><div class="gene">3</div><div class="gene mutated">6</div><div class="gene">7</div>
+                        <div class="gene">2</div><div class="gene">4</div><div class="gene mutated">5</div><div class="gene">8</div>
+                    </div>
+                    <div style="text-align:center;font-size:12px;color:#5a6a8a;margin-top:10px;">Swap two positions</div>
+                </div>
+                <div class="op-card">
+                    <div class="op-title">INVERSION MUTATION</div>
+                    <div class="gene-row">
+                        <div class="gene">1</div><div class="gene">3</div><div class="gene mutated">5</div><div class="gene mutated">7</div><div class="gene mutated">2</div><div class="gene">4</div>
+                    </div>
+                    <div class="arrow">&#8595;</div>
+                    <div class="gene-row">
+                        <div class="gene">1</div><div class="gene">3</div><div class="gene mutated">2</div><div class="gene mutated">7</div><div class="gene mutated">5</div><div class="gene">4</div>
+                    </div>
+                    <div style="text-align:center;font-size:12px;color:#5a6a8a;margin-top:10px;">Reverse a segment</div>
+                </div>
+                <div class="op-card">
+                    <div class="op-title">UNIFORM MUTATION</div>
+                    <div class="gene-row">
+                        <div class="gene">1</div><div class="gene">3</div><div class="gene mutated">5</div><div class="gene">7</div>
+                        <div class="gene">2</div><div class="gene">4</div><div class="gene">6</div><div class="gene">8</div>
+                    </div>
+                    <div class="arrow">&#8595;</div>
+                    <div class="gene-row">
+                        <div class="gene">1</div><div class="gene">3</div><div class="gene mutated">9</div><div class="gene">7</div>
+                        <div class="gene">2</div><div class="gene">4</div><div class="gene">6</div><div class="gene">8</div>
+                    </div>
+                    <div style="text-align:center;font-size:12px;color:#5a6a8a;margin-top:10px;">Random new value</div>
+                </div>
+            </div>
+            <div class="params-row">
+                <div class="param">
+                    <div class="param-label">Base Mutation Rate</div>
+                    <div class="param-value">pm = 0.05</div>
+                </div>
+                <div class="param">
+                    <div class="param-label">Range</div>
+                    <div class="param-value">0.01 - 0.30</div>
+                </div>
+                <div class="param">
+                    <div class="param-label">Adaptation</div>
+                    <div class="param-value">Diversity-based</div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Course Scheduling System - University Timetabling Optimization</div>
+    </div>
+</body>
+</html>
